@@ -1,13 +1,13 @@
+#:kivy 2.1.0
 WindowManager:
-
     MainWindow:
     AddUserWindow:
     LoginWindow:
     UserWindow:
 
+
 <MainWindow>:
-    on_pre_enter: root.callback()
-    name: "main"
+    name: 'main'
     Label:
         text: "Choose a user"
         font_size: 30
@@ -30,7 +30,7 @@ WindowManager:
         on_press: app.root.current = "Login"
 
 <AddUserWindow>:
-    name: "AddUser"
+    name: 'AddUser'
     username: username
     password: password
     benchpress: benchpress
@@ -84,7 +84,7 @@ WindowManager:
         on_press: app.root.current = "main"
 
 <LoginWindow>:
-    name: "Login"
+    name: 'Login'
     username: username
     password: password
     Label:
@@ -114,7 +114,7 @@ WindowManager:
         on_press: app.root.current = "main"
 
 <UserWindow>:
-    name: "user"
+    name: 'user'
     Label:
         text: "User page"
         font_size: 30

@@ -16,27 +16,12 @@ import hashlib
 
 
 class MainWindow(Screen):
-
-    def on_pre_enter(self):
-        self.callback()
-
-    def callback(self):
-        conn = sqlite3.connect('users.db')
-        c = conn.cursor()
-        c.execute("CREATE TABLE IF NOT EXISTS currently_logged_user (username text, password text) ")
-        c.execute("SELECT * FROM currently_logged_user")
-        data = c.fetchone()
-        print(data)
-        if data:
-
-            self.manager.current = "user"
-
-        conn.close()
+    pass
 
 
 class WindowManager(ScreenManager):
-
     pass
+
 
 
 class AddUserWindow(Screen, Widget):
@@ -102,9 +87,7 @@ class UserWindow(Screen):
         conn.commit()
         self.manager.transition.direction = "right"
         self.manager.current = "main"
-
-
-
+        conn.close()
 
 
 kv = Builder.load_file("my.kv")
@@ -113,7 +96,24 @@ kv = Builder.load_file("my.kv")
 class WorkoutApp(App):
 
     def build(self):
-        return kv
+        sm = WindowManager()
+        sm.add_widget(MainWindow(name="main"))
+        sm.add_widget(AddUserWindow(name="AddUser"))
+        sm.add_widget(LoginWindow(name="Login"))
+        sm.add_widget(UserWindow(name="user"))
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS currently_logged_user (username text, password text) ")
+        c.execute("SELECT * FROM currently_logged_user")
+        data = c.fetchone()
+        print(kivy.__version__)
+        print(data)
+        if data:
+            sm.current = "user"
+        else:
+            sm.current = "main"
+        conn.close()
+        return sm
 
 
 if __name__ == '__main__':
