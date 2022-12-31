@@ -1,0 +1,128 @@
+WindowManager:
+
+    MainWindow:
+    AddUserWindow:
+    LoginWindow:
+    UserWindow:
+
+<MainWindow>:
+    on_pre_enter: root.callback()
+    name: "main"
+    Label:
+        text: "Choose a user"
+        font_size: 30
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.5, "center_y": 0.92}
+    Label:
+        text: "Here are existing users:"
+        font_size: 30
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+    Button:
+        text: "Add user"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+        on_press: app.root.current = "AddUser"
+    Button:
+        text: "Login"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        on_press: app.root.current = "Login"
+
+<AddUserWindow>:
+    name: "AddUser"
+    username: username
+    password: password
+    benchpress: benchpress
+    squat: squat
+    deadlift: deadlift
+    Label:
+        text: "Add user page"
+        font_size: 30
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.5, "center_y": 0.9}
+    Label:
+        text: "Username:"
+        font_size: 15
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.25, "center_y": 0.7}
+    TextInput:
+        id: username
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+        multiline: False
+    TextInput:
+        id: password
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        multiline: False
+    TextInput:
+        id: benchpress
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        multiline: False
+    TextInput:
+        id: deadlift
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+        multiline: False
+    TextInput:
+        id: squat
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.3}
+        multiline: False
+
+    Button:
+        text: "Submit"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.2}
+        on_press: root.submit()
+    Button:
+        text: "Back"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_press: app.root.current = "main"
+
+<LoginWindow>:
+    name: "Login"
+    username: username
+    password: password
+    Label:
+        text: "Login page"
+        font_size: 30
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.5, "center_y": 0.9}
+    TextInput:
+        id: username
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.7}
+        multiline: False
+    TextInput:
+        id: password
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        multiline: False
+    Button:
+        text: "Submit"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        on_press: root.login()
+    Button:
+        text: "Back"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
+        on_press: app.root.current = "main"
+
+<UserWindow>:
+    name: "user"
+    Label:
+        text: "User page"
+        font_size: 30
+        size_hint: 1, 0.2
+        pos_hint: {"center_x": 0.5, "center_y": 0.9}
+    Button:
+        text: "Logout"
+        size_hint: 0.2, 0.1
+        pos_hint: {"center_x": 0.5, "center_y": 0.1}
+        on_press: root.logout()
+
