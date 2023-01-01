@@ -1,3 +1,12 @@
+ScreenManager:
+    FirstScreen:
+    LoginScreen:
+    SignupScreen:
+    ThisWeekWorkoutScreen:
+    ClosestWorkoutScreen:
+    ProfileScreen:
+
+
 <DrawerClickableItem@MDNavigationDrawerItem>
     focus_color: "#f18c04"
     text_color: "#4a4939"
@@ -13,13 +22,15 @@
     selected_color: "#0c6c4d"
     _no_ripple_effect: True
 
-MDScreen:
+<ProfileScreen>:
+    name: "profile"
 
     MDNavigationLayout:
 
         MDScreenManager:
 
             MDScreen:
+                name: "ProfileScreen"
 
                 MDTopAppBar:
                     title: "Me"
@@ -29,6 +40,31 @@ MDScreen:
                     specific_text_color: "#4a4939"
                     left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
                     right_action_items: [["dots-vertical", lambda x: app.callback()]]
+
+                MDLabel:
+                    text: "Profile"
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    font_style: "H4"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDScreen:
+                name: "ClosestWorkoutScreen"
+
+                MDTopAppBar:
+                    title: "Closest workout"
+                    elevation: 4
+                    pos_hint: {"top": 1}
+                    md_bg_color: "#f18c04"
+                    specific_text_color: "#4a4939"
+                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                    right_action_items: [["dots-vertical", lambda x: app.callback()]]
+                MDLabel:
+                    text: "Closest workout"
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    font_style: "H4"
+                    pos_hint: {"center_x": .5, "center_y": .5}
 
         MDNavigationDrawer:
             id: nav_drawer
@@ -47,11 +83,13 @@ MDScreen:
                     icon: "emoticon-cool"
                     text_right_color: "#4a4939"
                     text: "Me"
+                    on_release: root.manager.current = "profile"
 
                 DrawerClickableItem:
                     icon: "dumbbell"
                     text_right_color: "#4a4939"
                     text: "Closest workout"
+                    on_release: root.manager.current = "ClosestWorkoutScreen"
 
 
                 DrawerClickableItem:
@@ -70,5 +108,185 @@ MDScreen:
                     icon: "door-open"
                     text_right_color: "#4a4939"
                     text: "Logout"
+                    on_release: app.logout()
+<SignupScreen>:
+    name: "signup"
+    MDScreen:
+        MDLabel:
+            text: "Sign up"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            font_style: "H4"
+            pos_hint: {"center_y": .9}
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            helper_text_mode: "on_focus"
+            icon_right: "account"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .8}
+            size_hint_x: None
+            width: 300
+        MDTextField:
+            id: password
+            hint_text: "Password"
+            color_mode: 'primary'
+            password: True
+            helper_text_mode: "on_error"
+            helper_text_mode: "on_focus"
+            icon_right: "lock"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .7}
+            size_hint_x: None
+            width: 300
+        MDTextField:
+            id: password2
+            hint_text: "Confirm password"
+            password: True
+            helper_text_mode: "on_error"
+            icon_right: "lock"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .6}
+            size_hint_x: None
+            width: 300
+        MDTextField:
+            id: bench
+            hint_text: "Bench press PR"
+            icon_right: "dumbbell"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            size_hint_x: None
+            width: 300
+        MDTextField:
+            id: squat
+            hint_text: "Squat PR"
+            icon_right: "food-drumstick"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .4}
+            size_hint_x: None
+            width: 300
+        MDTextField:
+            id: deadlift
+            hint_text: "Deadlift PR"
+            icon_right: "account"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .3}
+            size_hint_x: None
+            width: 300
+        MDRaisedButton:
+            text: "Sign up"
+            pos_hint: {"center_x": .5, "center_y": .2}
+            on_release: app.signup(username.text, password.text, password2.text, bench.text, squat.text, deadlift.text)
+        MDRaisedButton:
+            text: "Back"
+            pos_hint: {"center_x": .5, "center_y": .1}
+            on_release: app.root.current = "first"
+
+
+<LoginScreen>:
+    name: "login"
+    MDScreen:
+        MDLabel:
+            text: "Login"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            font_style: "H4"
+            pos_hint: {"center_y": .9}
+        MDTextField:
+            id: username
+            hint_text: "Username"
+            color_mode: 'accent'
+            icon_right: "account"
+            icon_right_color: "#4a4939"
+            pos_hint: {"center_x": .5, "center_y": .7}
+            line_color_normal: app.theme_cls.accent_color
+            size_hint_x: None
+            width: 300
+
+        MDTextField:
+            id: password
+            hint_text: "Password"
+            color_mode: 'accent'
+            helper_text: "Enter your password"
+            color_mode: 'accent'
+            password: True
+            helper_text_mode: "on_focus"
+            icon_right: "lock"
+            icon_right_color: "#4a4939"
+            line_color_normal: app.theme_cls.accent_color
+            pos_hint: {"center_x": .5, "center_y": .6}
+            size_hint_x: None
+            width: 300
+        MDRaisedButton:
+            text: "Login"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            md_bg_color: "#f18c04"
+            on_release: app.login(username.text, password.text)
+        MDRaisedButton:
+            text: "Back"
+            pos_hint: {"center_x": .5, "center_y": .4}
+            md_bg_color: "#f18c04"
+            on_release: app.root.current = "first"
+
+
+<FirstScreen>:
+    name: "first"
+
+    MDScreen:
+        MDLabel:
+            text: "Welcome to the app"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            font_style: "H4"
+            pos_hint: {"center_y": .8}
+        MDRaisedButton:
+
+            text: "Login"
+            pos_hint: {"center_x": .5, "center_y": .4}
+            md_bg_color: "#f18c04"
+            on_release: root.manager.current = "login"
+        MDRaisedButton:
+            text: "Sign up"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            md_bg_color: "#f18c04"
+            on_release: root.manager.current = "signup"
+
+<ThisWeekWorkoutScreen>:
+    name: "thisweekworkout"
+    MDScreen:
+        MDLabel:
+            text: "This week workout"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            font_style: "H4"
+            pos_hint: {"center_y": .9}
+        MDRaisedButton:
+            text: "Back"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            md_bg_color: "#f18c04"
+            on_release: root.manager.current = "main"
+
+<ClosestWorkoutScreen>:
+    name: "closestworkout"
+    MDScreen:
+        MDLabel:
+            text: "Closest workout"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: "#4a4939"
+            font_style: "H4"
+            pos_hint: {"center_y": .9}
+        MDRaisedButton:
+            text: "Back"
+            pos_hint: {"center_x": .5, "center_y": .5}
+            md_bg_color: "#f18c04"
+            on_release: root.manager.current = "main"
+
+
+
 
 
