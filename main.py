@@ -1,15 +1,12 @@
 import sqlite3
 import hashlib
 from kivymd.app import MDApp
-from kivymd.uix.screen import Screen
-from kivy.lang import Builder
 from kivy.core.window import Window
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivy.lang import Builder
-from kivymd.uix.textfield import MDTextFieldRect, MDTextField
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
+from kivymd.uix.screenmanager import MDScreenManager
 
 Window.size = (300, 500)
 
@@ -38,14 +35,19 @@ class ProfileScreen(Screen):
     pass
 
 
+class SettingsScreen(Screen):
+    pass
+
 
 class WorkoutApp(MDApp):
     dialog = None
+
     def build(self):
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute(
-            'CREATE TABLE IF NOT EXISTS users (username text, password text, bench integer, squat integer, deadlift integer)')
+            'CREATE TABLE IF NOT EXISTS users (username text, password text, bench integer, squat integer, '
+            'deadlift integer)')
         c.execute("CREATE TABLE IF NOT EXISTS now_logged (username text, password text)")
         conn.commit()
         conn.close()
@@ -61,6 +63,11 @@ class WorkoutApp(MDApp):
         sm.add_widget(ClosestWorkoutScreen(name='closest_workout'))
         sm.add_widget(ThisWeekWorkoutScreen(name='this_week_workout'))
         sm.add_widget(ProfileScreen(name='profile'))
+        sm.add_widget(SettingsScreen(name='settings'))
+
+        inner_sm = MDScreenManager()
+        # inner_sm = sm.ids.inner_sm
+        inner_sm.add_widget(ClosestWorkoutScreen(name='closest_workout'))
 
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
@@ -77,7 +84,6 @@ class WorkoutApp(MDApp):
         conn.close()
         return sm
 
-
     def login(self, username, password):
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
@@ -93,8 +99,6 @@ class WorkoutApp(MDApp):
         c.execute("INSERT INTO now_logged VALUES (?, ?)", (username, password))
         conn.commit()
         conn.close()
-
-
 
     def signup(self, username, password, password2, bench, squat, deadlift):
         if password != password2:
@@ -167,7 +171,7 @@ class WorkoutApp(MDApp):
             conn.close()
             self.root.current = 'login'
 
-    def close_dialog(self, obj):
+    def close_dialog(self):
         self.dialog.dismiss()
         self.dialog = None
 
@@ -181,6 +185,9 @@ class WorkoutApp(MDApp):
         conn.commit()
         conn.close()
         self.root.current = 'first'
+
+    def callback(self):
+        self.root.current = 'settings'
 
 
 WorkoutApp().run()
