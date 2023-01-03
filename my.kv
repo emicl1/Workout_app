@@ -7,6 +7,7 @@ ScreenManager:
     ClosestWorkoutScreen:
     ProfileScreen:
     SettingsScreen:
+    InnerProfileScreen:
 
 
 <DrawerClickableItem@MDNavigationDrawerItem>
@@ -32,8 +33,7 @@ ScreenManager:
         MDScreenManager:
             id: inner_manager
             MDScreen:
-                name: "ProfileScreen"
-
+                name: "inner_profile"
                 MDTopAppBar:
                     title: "Me"
                     elevation: 4
@@ -49,6 +49,14 @@ ScreenManager:
                     theme_text_color: "Primary"
                     font_style: "H4"
                     pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDLabel:
+                    id: profile_name
+                    text: "Name: " + app.name
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    font_style: "H4"
+                    pos_hint: {"center_x": .5, "center_y": .4}
 
             MDScreen:
                 name: "closest_workout"
@@ -72,7 +80,7 @@ ScreenManager:
                 name: "this_week_workout"
 
                 MDTopAppBar:
-                    title: "This week workout"
+                    title: "Weekly workout"
                     elevation: 4
                     pos_hint: {"top": 1}
                     md_bg_color: "#f18c04"
@@ -81,6 +89,25 @@ ScreenManager:
                     right_action_items: [["dots-vertical", lambda x: app.callback()]]
                 MDLabel:
                     text: "This week workout"
+                    halign: "center"
+                    theme_text_color: "Primary"
+                    font_style: "H4"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+            MDScreen:
+                name: "cardio_log"
+
+                MDTopAppBar:
+                    title: "Cardio log"
+                    elevation: 4
+                    pos_hint: {"top": 1}
+                    md_bg_color: "#f18c04"
+                    specific_text_color: "#4a4939"
+                    left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+                    right_action_items: [["dots-vertical", lambda x: app.callback()]]
+
+                MDLabel:
+                    text: "Cardio log"
                     halign: "center"
                     theme_text_color: "Primary"
                     font_style: "H4"
@@ -103,7 +130,7 @@ ScreenManager:
                     icon: "emoticon-cool"
                     text_right_color: "#4a4939"
                     text: "Me"
-                    on_release: root.manager.current = "profile"
+                    on_release: inner_manager.current = "inner_profile"
 
                 DrawerClickableItem:
                     icon: "dumbbell"
@@ -121,6 +148,7 @@ ScreenManager:
                     icon: "run"
                     text_right_color: "#4a4939"
                     text: "Cardio log"
+                    on_release: inner_manager.current = "cardio_log"
 
                 MDNavigationDrawerDivider:
 
@@ -273,39 +301,6 @@ ScreenManager:
             pos_hint: {"center_x": .5, "center_y": .5}
             md_bg_color: "#f18c04"
             on_release: root.manager.current = "signup"
-
-<ThisWeekWorkoutScreen>:
-    name: "thisweekworkout"
-    MDScreen:
-        MDLabel:
-            text: "This week workout"
-            halign: "center"
-            theme_text_color: "Custom"
-            text_color: "#4a4939"
-            font_style: "H4"
-            pos_hint: {"center_y": .9}
-        MDRaisedButton:
-            text: "Back"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            md_bg_color: "#f18c04"
-            on_release: root.manager.current = "main"
-
-<ClosestWorkoutScreen>:
-    name: "closest_workout"
-    MDScreen:
-        MDLabel:
-            text: "Closest workout"
-            halign: "center"
-            theme_text_color: "Custom"
-            text_color: "#4a4939"
-            font_style: "H4"
-            pos_hint: {"center_y": .9}
-        MDRaisedButton:
-            text: "Back"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            md_bg_color: "#f18c04"
-            on_release: root.manager.current = "main"
-
 
 
 <SettingsScreen>:

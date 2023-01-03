@@ -1,5 +1,7 @@
 import sqlite3
 import hashlib
+
+from kivy.properties import StringProperty
 from kivymd.app import MDApp
 from kivy.core.window import Window
 from kivy.lang import Builder
@@ -7,6 +9,8 @@ from kivy.uix.screenmanager import Screen, ScreenManager
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.screenmanager import MDScreenManager
+from kivymd.uix.label import MDLabel
+
 
 Window.size = (300, 500)
 
@@ -24,7 +28,19 @@ class SignupScreen(Screen):
 
 
 class ClosestWorkoutScreen(Screen):
-    pass
+    def on_enter(self, *args):
+        conn = sqlite3.connect('users.db')
+        c = conn.cursor()
+        try:
+            c.execute("SELECT username FROM now_logged")
+            username = c.fetchone()[0]
+            label = MDLabel(text=username, halign="center", theme_text_color="Primary")
+            self.add_widget(label)
+        except:
+
+            pass
+
+        conn.close()
 
 
 class ThisWeekWorkoutScreen(Screen):
@@ -35,14 +51,37 @@ class ProfileScreen(Screen):
     pass
 
 
+class InnerProfileScreen(Screen):
+    pass
+
+
+
 class SettingsScreen(Screen):
     pass
+
+class CardioLogScreen(Screen):
+    pass
+
+
+def get_name():
+    conn = sqlite3.connect('users.db')
+    c = conn.cursor()
+    try:
+        c.execute("SELECT username FROM now_logged")
+        username = c.fetchone()[0]
+        return username
+    except:
+        return StringProperty("Noah")
+
 
 
 class WorkoutApp(MDApp):
     dialog = None
+    name = get_name()
+
 
     def build(self):
+        global sm
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute(
@@ -60,23 +99,21 @@ class WorkoutApp(MDApp):
         sm.add_widget(FirstScreen(name='first'))
         sm.add_widget(LoginScreen(name='login'))
         sm.add_widget(SignupScreen(name='signup'))
-        sm.add_widget(ClosestWorkoutScreen(name='closest_workout'))
-        sm.add_widget(ThisWeekWorkoutScreen(name='this_week_workout'))
         sm.add_widget(ProfileScreen(name='profile'))
         sm.add_widget(SettingsScreen(name='settings'))
 
         inner_sm = MDScreenManager()
-        # inner_sm = sm.ids.inner_sm
+
         inner_sm.add_widget(ClosestWorkoutScreen(name='closest_workout'))
+        inner_sm.add_widget(ThisWeekWorkoutScreen(name='this_week_workout'))
+        inner_sm.add_widget(InnerProfileScreen(name='inner_profile'))
+        inner_sm.add_widget(CardioLogScreen(name='cardio_log'))
 
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         c.execute('SELECT username, password FROM now_logged')
         data = c.fetchone()
-        print(data)
         if data:
-            print("here")
-
             sm.current = 'profile'
         else:
             sm.current = 'first'
@@ -85,6 +122,13 @@ class WorkoutApp(MDApp):
         return sm
 
     def login(self, username, password):
+        new_name = get_name()
+        name = new_name
+        screen = self.root.ids.screenmanager.get_screen("inner_profile")
+        label = screen.ids.label
+        label.text = name
+
+
         conn = sqlite3.connect('users.db')
         c = conn.cursor()
         password = hashlib.sha256(password.encode()).hexdigest()
@@ -188,6 +232,14 @@ class WorkoutApp(MDApp):
 
     def callback(self):
         self.root.current = 'settings'
+
+    def closest_workout_build(self):
+        print("here")
+
+
+
+
+
 
 
 WorkoutApp().run()
