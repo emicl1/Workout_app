@@ -122,11 +122,6 @@ class WorkoutApp(MDApp):
         return sm
 
     def login(self, username, password):
-        new_name = get_name()
-        name = new_name
-        screen = self.root.ids.screenmanager.get_screen("inner_profile")
-        label = screen.ids.label
-        label.text = name
 
 
         conn = sqlite3.connect('users.db')
